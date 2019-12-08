@@ -10,17 +10,17 @@ export default class SlideService {
 				'Content-Type': 'application/json'
 			}
 		});
-		return response.data.slides;
+		return response.data.slides.slides;
 	};
 	static async getSlideViaId(slideId) {
 		const response = await axios({
 			data: {},
 			method: 'get',
-			url: `${process.env.REACT_APP_SERVER_URL}/slide/${slideId}`,
+			url: `${process.env.REACT_APP_SERVER_URL}/slides/${slideId}`,
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		});
-		return response.data;
+		return response.data.content;
 	};
 }

@@ -1,36 +1,42 @@
 import React, {useState, useEffect} from 'react';
-import SwipeableCard from "../components/SwipeableCard";
+import SlideCard from '../components/SlideCard';
+import LastSlide from "../components/LastSlide";
 import {SlideService} from "../lib/index";
 
-export default () => {
-	const [quiz, setQuiz] = useState([]);
-	useEffect(() => {
-		async function fetchData() {
-			const quizzes = await SlideService.getQuiz();
-			console.log(quizzes);
-			setQuiz(quizzes);
-		}
-		fetchData();
-		console.log(quiz);
-	}, []);
-	const [currentSlide, setCurrentSlide] = useState(0);
-	const [slideContent, setSlideContent] = useState(quiz[0]);
+const responses = [];
 
-	const onSlideChange = async (index, lastIndex) => {
-		console.log('onSlideChange called', index, lastIndex);
-		if (index === 1) {
-			// Student got back to Question slide
-			await setCurrentSlide(currentSlide+1);
-			setSlideContent(quiz[currentSlide])
-		} else {
-			// yes or no? - record answer
-			console.log('student answer to ' + currentSlide + ' was: ' + index);
+export default () => {
+	const [currentQuiz, setCurrentQuiz] = useState([]);
+	const [index, setIndex] = useState(0);
+	const [endReached, setEndReached] = useState(false);
+
+	const onResponse = async (id, response) => {
+		setIndex(index+1);
+		responses.push({[id]: response});
+		console.log(responses);
+		console.log(index);
+		if (currentQuiz.length-1 === index) {
+			setEndReached(true);
 		}
 	};
 
+	useEffect(() => {
+		async function fetchData() {
+			const quizSlides = await SlideService.getQuiz();
+			setCurrentQuiz(quizSlides);
+			// console.log(quiz);
+		}
+		fetchData();
+	}, []);
+
 	return (
-		<div className="App">
-			<SwipeableCard quizzes index={1} slideContent={slideContent} onSlideChange={onSlideChange} />
-		</div>
+		<React.Fragment>
+			{endReached ?
+				<LastSlide/> :
+				currentQuiz.length ?
+				<SlideCard slideId={currentQuiz[index]} onResponse={onResponse}/> :
+					<div>Loading...</div>
+			}
+		</React.Fragment>
 	);
 }
