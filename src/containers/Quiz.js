@@ -22,7 +22,15 @@ export default () => {
 
 	useEffect(() => {
 		async function fetchData() {
-			const quizSlides = await SlideService.getQuiz();
+			// const quizSlides = await SlideService.getQuiz();
+			const quizSlides = ['../mock/images/1.png',
+				'../mock/images/2.png',
+				'../mock/images/3.png',
+				'../mock/images/4.png',
+				'../mock/images/5.png',
+				'../mock/images/6.png',
+				'../mock/images/7.png'
+			];
 			setCurrentQuiz(quizSlides);
 			// console.log(quiz);
 		}

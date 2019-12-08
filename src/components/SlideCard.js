@@ -5,7 +5,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import {SlideService} from "../lib";
 
 const useStyles = makeStyles({
 	card: {
@@ -14,29 +13,29 @@ const useStyles = makeStyles({
 });
 
 export default function ImgMediaCard(props) {
-	const [imgUrl, setImgUrl] = useState(null);
+	// const [imgUrl, setImgUrl] = useState(null);
 	const { slideId, onResponse } = props;
 
-	useEffect(() => {
-		async function fetchData() {
-			const slide = await SlideService.getSlideViaId(slideId);
-			console.log('SlideCard.useEffect: ' + slide.name);
-			setImgUrl(slide.url);
-		}
-		fetchData();
-	}, [slideId]);
+	// useEffect(() => {
+	// 	async function fetchData() {
+	// 		// const slide = await SlideService.getSlideViaId(slideId);
+	// 		// console.log('SlideCard.useEffect: ' + slide.name);
+	// 		setImgUrl(slide.url);
+	// 	}
+	// 	fetchData();
+	// }, [slideId]);
 
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			{imgUrl ?
+			{slideId ?
 				<Card className={classes.card}>
 					<CardActionArea>
 						<CardMedia
 							component="img"
 							alt="slide content"
-							height="350"
-							image={process.env.REACT_APP_SERVER_URL + imgUrl}
+							height="400"
+							image={slideId}
 							title="Slide content"
 						/>
 					</CardActionArea>
